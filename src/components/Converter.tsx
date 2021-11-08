@@ -2,43 +2,34 @@ import React, { useEffect, useState } from 'react';
 import { fetchRate } from '../api/CurrencyService';
 
 
-interface ConverterProps {
-}
-
-const Converter: React.FC<ConverterProps> = () => {
+const Converter: React.FC = () => {
 
   const [inputState, setInputState] = useState<string>('0');
-  const [currency, setCurrency] = useState<string>();
-
-  useEffect(() => {
-    const userLang = navigator.language;
-    switch (userLang) {
-      case 'ru-RU':
-        setCurrency('RUB');
-        break;
-      case 'en-EN':
-        setCurrency('USD');
-        break;
-      default:
-        setCurrency('EUR');
-    }
-  }, [navigator.language]);
-
+  const [convertedValue, setConvertedValue] = useState<string>('');
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const input = e.currentTarget.value;
-    if (/^[0-9]+$/.test(input) || input === "") {
-      setInputState(e.currentTarget.value);
-    }
+    setInputState(e.currentTarget.value);
   }
 
   const keyDownHander = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.code !== 'Enter') return;
 
     const rates = await fetchRate();
+    const value = parseFloat(inputState);
 
-    console.log(rates, currency);
-    
+    try {
+      const originCurrency = inputState.toUpperCase().split('IN')[0].replace(/[^A-Z]+/g, '');
+      const targetCurrency = inputState.toUpperCase().split('IN')[1].replace(/[^A-Z]+/g, '');
+      const originRate = originCurrency === 'RUB' ? 1 : rates[originCurrency].Value;
+      const targetRate = targetCurrency === 'RUB' ? 1 : rates[targetCurrency].Value;
+
+      console.log(originRate, targetRate);
+
+      const result = (value * originRate / targetRate).toFixed(4);
+      setConvertedValue(result);
+    } catch {
+      console.log('Некорректный ввод')
+    }
 
   }
 
@@ -51,7 +42,7 @@ const Converter: React.FC<ConverterProps> = () => {
         onKeyDown={keyDownHander}
       />
       <div>
-
+        {convertedValue}
       </div>
     </div>
   )
