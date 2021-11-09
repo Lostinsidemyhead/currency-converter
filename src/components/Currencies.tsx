@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { fetchRate } from '../api/CurrencyService';
+import Selector from './Selector';
 
-enum currencies {
+export enum currencies {
   RUB = 'RUB',
   USD = 'USD',
   EUR = 'EUR'
 }
 
-type currency = {
+export type currency = {
   code: string,
-  rate: number
+  rate: string
 }
 
 const Currencies: React.FC = () => {
-  const [baseCurrency, setBaseCurrency] = useState<currencies>(currencies.RUB);
+  const [baseCurrency, setBaseCurrency] = useState<currencies | string>(currencies.RUB);
   const [rates, setRates] = useState<currency[]>();
 
   useEffect(() => {
@@ -35,6 +36,10 @@ const Currencies: React.FC = () => {
     fillTable();
   }, [baseCurrency]);
 
+  const onChangeCurrency = (code: string) => {
+    setBaseCurrency(code);
+  }
+
   const fillTable = async () => {
     const fetchedRates = await fetchRate();
     const currentRate = fetchedRates[baseCurrency]?.Value || 1;
@@ -43,7 +48,7 @@ const Currencies: React.FC = () => {
     if (baseCurrency !== currencies.RUB) {
       rates.push({
         code: currencies.RUB,
-        rate: 1 / currentRate
+        rate: (1 / currentRate).toFixed(4)
       });
     }
 
@@ -53,7 +58,7 @@ const Currencies: React.FC = () => {
       if (fetchedRates[currency]?.CharCode) {
         rates.push({
           code: fetchedRates[currency].CharCode,
-          rate: fetchedRates[currency].Value / currentRate
+          rate: (fetchedRates[currency].Value / currentRate).toFixed(4)
         });
       }
     }
@@ -63,6 +68,11 @@ const Currencies: React.FC = () => {
 
   return (
     <div>
+      <Selector
+        current={baseCurrency}
+        allCurrencies={rates}
+        onChange={onChangeCurrency}
+      />
       {rates?.map((item) => (
         <div className='currency' key={item.code}>
           1 {item.code} = {item.rate} {baseCurrency}

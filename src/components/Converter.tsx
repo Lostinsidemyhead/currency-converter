@@ -33,13 +33,13 @@ const Converter: React.FC = () => {
   return (
     <div>
       <input
-        className='converterInput'
+        className='converter-input'
         type='text'
         value={inputState}
         onChange={handleChange}
         onKeyDown={keyDownHander}
       />
-      <div className='convertedValue'>
+      <div className='converted-value'>
         {convertedValue}
       </div>
     </div>
