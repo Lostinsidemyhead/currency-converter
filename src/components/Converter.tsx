@@ -30,7 +30,6 @@ const Converter: React.FC = () => {
     } catch {
       console.log('Некорректный ввод')
     }
-
   }
 
   return (
