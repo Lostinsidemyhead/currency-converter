@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { fetchRate } from '../api/CurrencyService';
 
+const hints = {
+  inputHint: 'Example: 15 eur in usd',
+  errorHint: 'Incorrect input!',
+};
 
 const Converter: React.FC = () => {
 
   const [inputState, setInputState] = useState<string>('0');
   const [convertedValue, setConvertedValue] = useState<string>('');
+  const [hintIsShown, setHintIsShown] = useState<boolean>(false);
+  const [hint, setHint] = useState<string>(hints.inputHint);
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     setInputState(e.currentTarget.value);
   }
 
   const keyDownHander = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    setHint(hints.inputHint);
     if (e.code !== 'Enter') return;
 
     const rates = await fetchRate();
@@ -26,8 +33,18 @@ const Converter: React.FC = () => {
       const result = (value * originRate / targetRate).toFixed(4);
       setConvertedValue(result);
     } catch {
-      alert('Некорректный ввод');
+      setHint(hints.errorHint);
+      setHintIsShown(true);
     }
+  }
+
+  const inputFocusHandler = () => {
+    setHint(hints.inputHint)
+    setHintIsShown(true);
+  }
+
+  const inputBlurHandler = () => {
+    setHintIsShown(false);
   }
 
   return (
@@ -38,7 +55,14 @@ const Converter: React.FC = () => {
         value={inputState}
         onChange={handleChange}
         onKeyDown={keyDownHander}
+        onFocus={inputFocusHandler}
+        onBlur={inputBlurHandler}
       />
+      {hintIsShown &&
+        <div className='hint'>
+          {hint}
+        </div>
+      }
       <div className='converted-value'>
         {convertedValue}
       </div>
