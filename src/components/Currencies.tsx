@@ -13,7 +13,7 @@ type currency = {
 }
 
 const Currencies: React.FC = () => {
-  const [baseCurrency, setBaseCurrency] = useState<currencies>(currencies.USD);
+  const [baseCurrency, setBaseCurrency] = useState<currencies>(currencies.RUB);
   const [rates, setRates] = useState<currency[]>();
 
   useEffect(() => {
@@ -40,24 +40,17 @@ const Currencies: React.FC = () => {
     const currentRate = fetchedRates[baseCurrency]?.Value || 1;
 
     const rates: currency[] = [];
-
     if (baseCurrency !== currencies.RUB) {
       rates.push({
         code: currencies.RUB,
         rate: 1 / currentRate
-
       });
     }
 
     for (let currency in currencies) {
       if (baseCurrency === currency) continue;
 
-      if (baseCurrency !== currencies.RUB) {
-        rates.push({
-          code: currencies.RUB,
-          rate: 1 / currentRate
-        });
-      } else {
+      if (fetchedRates[currency]?.CharCode) {
         rates.push({
           code: fetchedRates[currency].CharCode,
           rate: fetchedRates[currency].Value / currentRate
@@ -70,11 +63,11 @@ const Currencies: React.FC = () => {
 
   return (
     <div>
-      {rates?.map((currency) => (
+      {rates?.map((item) => (
 
-        <div>
-          {currency.code}
-          {currency.rate}
+        <div key={item.code}>
+          {item.code}
+          {item.rate}
         </div>
 
       ))}

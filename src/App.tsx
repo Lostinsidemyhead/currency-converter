@@ -6,8 +6,11 @@ import Router from './components/Router';
 function App() {
   return (
     <HashRouter>
-      <NavBar />
-      <Router />
+      <div>
+        <NavBar />
+        <Router />
+      </div>
+
     </HashRouter>
   );
 }
