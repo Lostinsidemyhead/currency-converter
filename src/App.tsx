@@ -6,7 +6,7 @@ import Router from './components/Router';
 function App() {
   return (
     <HashRouter>
-      <div>
+      <div className='app'>
         <NavBar />
         <Router />
       </div>

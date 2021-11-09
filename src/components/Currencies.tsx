@@ -64,12 +64,9 @@ const Currencies: React.FC = () => {
   return (
     <div>
       {rates?.map((item) => (
-
-        <div key={item.code}>
-          {item.code}
-          {item.rate}
+        <div className='currency' key={item.code}>
+          1 {item.code} = {item.rate} {baseCurrency}
         </div>
-
       ))}
 
     </div>

@@ -23,24 +23,23 @@ const Converter: React.FC = () => {
       const originRate = originCurrency === 'RUB' ? 1 : rates[originCurrency].Value;
       const targetRate = targetCurrency === 'RUB' ? 1 : rates[targetCurrency].Value;
 
-      console.log(originRate, targetRate);
-
       const result = (value * originRate / targetRate).toFixed(4);
       setConvertedValue(result);
     } catch {
-      console.log('Некорректный ввод')
+      alert('Некорректный ввод');
     }
   }
 
   return (
     <div>
       <input
+        className='converterInput'
         type='text'
         value={inputState}
         onChange={handleChange}
         onKeyDown={keyDownHander}
       />
-      <div>
+      <div className='convertedValue'>
         {convertedValue}
       </div>
     </div>

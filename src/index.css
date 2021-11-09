@@ -15,3 +15,67 @@ body {
     rgba(100, 115, 255, 1) 100%
   );
 }
+
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 960px;
+  min-height: 400px;
+  background: #161a2b;
+  text-align: center;
+  margin: 128px auto;
+  border-radius: 10px;
+  padding-bottom: 32px;
+  color: #fff;
+  font-size: 45px;
+}
+
+.navbar {
+  margin: 30px 0;
+  color: #fff;
+  font-size: 24px;
+}
+
+.navbar__link {
+  padding: 16px;
+  margin: 30px;
+  text-decoration: none;
+  border: none;
+  border-radius:  10px 10px 10px 10px ;
+  cursor: pointer;
+  outline: none;
+  background: linear-gradient(
+    90deg,
+    rgb(95, 19, 247) 0%,
+    rgb(153, 1, 247) 100%
+  );
+  color: #fff;
+}
+.navbar__link:active{
+  background: linear-gradient(
+    90deg,
+    rgba(93, 12, 255, 0.357) 0%,
+    rgba(154, 0, 250, 0.33) 100%
+  );
+}
+
+.converterInput{
+  padding: 14px 32px 14px 16px;
+  border-radius: 4px 0 0 4px;
+  border: 2px solid #5d0cff;
+  outline: none;
+  width: 320px;
+  background: transparent;
+  color: #fff;
+  font-size: 24px;
+  margin-top: 30px;
+}
+
+.convertedValue{
+  margin-top: 30px;
+}
+
+.currency {
+  margin-top: 30px;
+}
